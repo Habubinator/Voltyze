@@ -9,6 +9,9 @@ module.exports = {
   testMatch: ['**/?(*.)+(spec|test).[tj]s?(x)'],
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   moduleNameMapper: {
-    '^@(.*)$': '<rootDir>/src/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@database$': '<rootDir>/src/database',
+    '^@auth/enums$': '<rootDir>/src/auth/enums',
+    '^@auth/types$': '<rootDir>/src/auth/types',
   },
 };

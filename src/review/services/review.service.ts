@@ -2,7 +2,7 @@ import { Roles } from '@auth/enums';
 import { AuthorizedUser } from '@auth/types';
 import { prisma } from '@database';
 
-class ReviewService {
+export class ReviewService {
   // Додавання відгуку
   async addReview(
     user_id: number,

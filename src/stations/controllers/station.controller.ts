@@ -4,7 +4,7 @@ import { AuthorizedRequest } from '@auth/types';
 import { HttpCodes } from '@common/enums';
 import { validateRequest } from '@common/utils';
 
-class StationController {
+export class StationController {
   // Add station to favorites
   async addToFavorites(
     req: AuthorizedRequest,

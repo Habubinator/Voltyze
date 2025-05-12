@@ -1,7 +1,6 @@
 import { prisma } from '@database';
-import { comments } from '../../../generated/prisma/index';
 
-class StationService {
+export class StationService {
   // Додавання станції до улюблених
   async addToFavorites(userId: number, markerId: number) {
     const existingFavorite = await prisma.savedStations.findUnique({

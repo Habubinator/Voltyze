@@ -1,6 +1,6 @@
 import { prisma } from '@database';
 
-class AdminService {
+export class AdminService {
   // Блокування користувача
   async blockUser(userId: number, reason: string) {
     const user = await prisma.user.findUnique({
