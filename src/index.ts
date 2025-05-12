@@ -15,6 +15,7 @@ import { useSwagger } from '@swagger';
 import { errorHandler } from '@common/middlewares';
 import { I18n } from 'i18n';
 import { join } from 'path';
+import { SwaggerGenerator } from '@common/swagger';
 
 BigInt.prototype['toJSON'] = function () {
   return this.toString();
@@ -57,14 +58,19 @@ const bootstrap = async () => {
   app.use('/api/csrf', csrfRouter);
   app.use('/api/permissions', permissionsRouter);
 
-  useSwagger('/api/docs', app);
-
   app.use(errorHandler);
 
   app.listen(PORT, () => {
     mailListener.initialize();
     console.log(`Server started on PORT: ${PORT}`);
   });
+
+  const swagger = new SwaggerGenerator(app, {
+    title: 'Voltyze',
+    version: '1.0.0',
+  });
+
+  swagger.serveDocs('/api/docs');
 };
 
 bootstrap()
