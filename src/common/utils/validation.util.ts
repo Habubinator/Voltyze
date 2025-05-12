@@ -2,7 +2,7 @@ import type { Request } from 'express';
 import { validationResult, Meta } from 'express-validator';
 import { HttpException } from '../exceptions';
 import { ErrorCodes } from '../enums';
-import { User } from '@prisma/client';
+import { User } from '../../../generated/prisma';
 import { AuthorizedRequest } from '@auth/types';
 import { Roles } from '@auth/enums';
 

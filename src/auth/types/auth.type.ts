@@ -1,4 +1,4 @@
-import { User, Role } from '@prisma/client';
+import { User, Role } from '../../../generated/prisma';
 import { Request } from 'express';
 
 export type AuthorizedUser = Pick<User, 'id' | 'name' | 'isBanned'> & {
