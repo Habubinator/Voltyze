@@ -11,7 +11,6 @@ import { csrfRouter } from '@csrf/routes';
 import { doubleCsrfProtection } from '@csrf/middlewares';
 import { permissionsRouter } from '@permissions/routes';
 import { mailListener } from '@mail';
-import { useSwagger } from '@swagger';
 import { errorHandler } from '@common/middlewares';
 import { I18n } from 'i18n';
 import { join } from 'path';
