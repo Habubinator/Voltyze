@@ -36,7 +36,6 @@ async function postRequest(url, data) {
 
 // Fetch all stations
 async function fetchStations() {
-    console.log(1)
     return await getRequest('/stations/radius');
 }
 
