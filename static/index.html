@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; img-src * data:; worker-src * blob:;">
+    <title>Voltyze - Мапа електрозарядних станцій</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="static/js/mapbox.js"></script>
+</head>
+
+<body>
+    <header id="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="static/images/logo.png" alt="Voltyze Logo">
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Мапа</a></li>
+                    <li><a href="#">Про нас</a></li>
+                    <li><a href="#">Контакти</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="auth-section">
+                <nav>
+                    <ul>
+                        <li><a href="#">Зареєструватися</a></li>
+                        <li><a href="#">Увійти</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-filters">
+                <div class="filter-group">
+                    <h3>Фільтри</h3>
+                    <div class="filter-item">
+                        <label>
+                            <input type="checkbox" checked data-filter="fast">
+                            Швидкі зарядки
+                        </label>
+                    </div>
+                    <div class="filter-item">
+                        <label>
+                            <input type="checkbox" checked data-filter="public">
+                            Публічні
+                        </label>
+                    </div>
+                    <div class="filter-item">
+                        <label>
+                            <input type="checkbox" checked data-filter="open24">
+                            Відкриті 24/7
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Потужність</h3>
+                    <div class="range-filter">
+                        <label for="power-range">мін. потужність: <span id="power-value">0</span> кВт</label>
+                        <input type="range" id="power-range" min="0" max="350" step="10" value="0">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Тип конектора</h3>
+                    <div class="filter-item">
+                        <label>
+                            <input type="checkbox" checked data-connector="ccs">
+                            CCS
+                        </label>
+                    </div>
+                    <div class="filter-item">
+                        <label>
+                            <input type="checkbox" checked data-connector="chademo">
+                            CHAdeMO
+                        </label>
+                    </div>
+                    <div class="filter-item">
+                        <label>
+                            <input type="checkbox" checked data-connector="type2">
+                            Type 2
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Modals -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Увійти</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Увійти</button>
+                    <a href="#" id="forgot-password-link">Забули пароль?</a>
+                </div>
+                <p class="auth-redirect">Ще не маєте акаунта? <a href="#" id="show-register">Зареєструватися</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Реєстрація</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Ім'я</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password-confirm">Підтвердіть пароль</label>
+                    <input type="password" id="register-password-confirm" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Зареєструватися</button>
+                </div>
+                <p class="auth-redirect">Вже маєте акаунт? <a href="#" id="show-login">Увійти</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="reset-password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Відновлення паролю</h2>
+            <form id="reset-password-form">
+                <div class="form-group">
+                    <label for="reset-email">Email</label>
+                    <input type="email" id="reset-email" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Відправити</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <p>© 2025 Voltyze. Всі права захищені.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Компанія</h4>
+                        <ul>
+                            <li><a href="#">Про нас</a></li>
+                            <li><a href="#">Команда</a></li>
+                            <li><a href="#">Кар'єра</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Підтримка</h4>
+                        <ul>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Контакти</a></li>
+                            <li><a href="#">Умови використання</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Слідкуйте за нами</h4>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-telegram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS imports -->
+    <script src="static/js/auth.js"></script>
+    <script src="static/js/api.js"></script>
+    <script src="static/js/map.js"></script>
+    <script src="static/js/app.js"></script>
+</body>
+
+</html>

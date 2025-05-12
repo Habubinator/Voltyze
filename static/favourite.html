@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; img-src * data:; worker-src * blob:;">
+    <title>Voltyze - Улюблені станції</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.css" rel="stylesheet">
+</head>
+
+<body>
+    <header id="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="static/images/logo.png" alt="Voltyze Logo">
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Мапа</a></li>
+                    <li><a href="#">Про нас</a></li>
+                    <li><a href="#">Контакти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="favorite-stations">
+            <div class="container">
+                <h2>Ваші улюблені станції</h2>
+                <div class="stations-list" id="stations-list">
+                    <!-- Станції будуть додаватися тут через JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <p>© 2025 Voltyze. Всі права захищені.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+<script src="static/js/mockup-fav.js"></script>
+
+</html>

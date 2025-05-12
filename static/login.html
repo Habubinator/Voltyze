@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; img-src * data:; worker-src * blob:;">
+    <title>Voltyze - Авторизація</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header id="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="static/images/logo.png" alt="Voltyze Logo">
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Мапа</a></li>
+                    <li><a href="#">Про нас</a></li>
+                    <li><a href="#">Контакти</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="auth-section">
+                <nav>
+                    <ul>
+                        <li><a href="#">Зареєструватися</a></li>
+                        <li><a href="#">Увійти</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <!-- Login Form -->
+            <div class="auth-box" id="login-box">
+                <h2>Увійти</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Пароль</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">Увійти</button>
+                    </div>
+                    <p class="auth-redirect">Ще не маєте акаунта? <a href="#" id="show-register">Зареєструватися</a></p>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-box" id="register-box" style="display: none;">
+                <h2>Реєстрація</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-name">Ім'я</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Пароль</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password-confirm">Підтвердження паролю</label>
+                        <input type="password" id="register-password-confirm" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">Зареєструватися</button>
+                    </div>
+                    <p class="auth-redirect">Вже маєте акаунт? <a href="#" id="show-login">Увійти</a></p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <p>© 2025 Voltyze. Всі права захищені.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Компанія</h4>
+                        <ul>
+                            <li><a href="#">Про нас</a></li>
+                            <li><a href="#">Команда</a></li>
+                            <li><a href="#">Кар'єра</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Підтримка</h4>
+                        <ul>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Контакти</a></li>
+                            <li><a href="#">Умови використання</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Слідкуйте за нами</h4>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-telegram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="static/js/login.js">
+    </script>
+</body>
+
+</html>

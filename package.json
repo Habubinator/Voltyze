@@ -8,6 +8,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc && npx tsc-alias",
+    "cold": "npm run build && npm start",
     "commit": "npx cz",
     "db:seed": "node cli/seed.js",
     "dev": "nodemon --watch \"src/\" --ext \"ts,json\" --ignore \"src//*.spec.ts\" --exec \"npx tsx src/index.ts\"",

@@ -1,4 +1,5 @@
 import { prisma } from '@database';
+import { comments } from '../../../generated/prisma/index';
 
 class StationService {
   // Додавання станції до улюблених
@@ -77,9 +78,22 @@ class StationService {
           gte: lng - radius,
           lte: lng + radius,
         },
+        // station_description: {
+        //   some: {
+        //     comments: {
+        //       some: {
+        //         description_id: {
+        //           not: null,
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
       },
       include: {
-        station_description: true,
+        station_description: {
+          include: { comments: true, station_connector: true, images: true },
+        },
       },
     });
     return stations;
