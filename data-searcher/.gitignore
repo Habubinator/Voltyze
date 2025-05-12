@@ -1,0 +1,6 @@
+node_modules
+tz_materials
+.env
+build
+logs
+.VSCodeCounter

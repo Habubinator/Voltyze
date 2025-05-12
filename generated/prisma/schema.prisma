@@ -1,0 +1,226 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model api_source {
+  api_id             Int                @id @default(autoincrement()) @db.SmallInt
+  link               String             @unique(map: "link") @db.VarChar(512)
+  detailed_link      String             @db.VarChar(512)
+  last_update        BigInt?
+  next_update        BigInt?
+  update_interval_ms BigInt?
+  comments_link      String?            @db.VarChar(255)
+  station_desc_api   station_desc_api[]
+}
+
+model comments {
+  comment_id          Int                  @id @default(autoincrement())
+  description_id      Int?
+  comment_href        String?              @db.VarChar(255)
+  author_name         String?              @db.VarChar(255)
+  user_id             Int?
+  user                User?                @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rating              Float?               @db.Float
+  comment_text        String?              @db.VarChar(600)
+  station_description station_description? @relation(fields: [description_id], references: [description_id], onDelete: NoAction, onUpdate: NoAction, map: "comments_ibfk_1")
+
+  @@index([description_id], map: "description_id")
+}
+
+model images {
+  image_id            Int                  @id @default(autoincrement())
+  description_id      Int?
+  image_href          String?              @db.VarChar(255)
+  station_description station_description? @relation(fields: [description_id], references: [description_id], onDelete: NoAction, onUpdate: NoAction, map: "images_ibfk_1")
+
+  @@index([description_id], map: "description_id")
+}
+
+model station_connector {
+  connector_id                 Int                  @id @default(autoincrement())
+  description_id               Int?
+  connector_type_id            Int?                 @db.TinyInt
+  connector_status_id          Int?                 @db.TinyInt
+  connector_name               String?              @db.VarChar(255)
+  power_kw                     Int?                 @db.SmallInt
+  current_amp                  Int?                 @db.SmallInt
+  price_per_start              Decimal?             @db.Decimal(10, 2)
+  price                        Decimal?             @db.Decimal(10, 2)
+  currency                     String?              @db.Char(4)
+  free_min_after_charging      Int?                 @db.SmallInt
+  price_per_min_after_charging Decimal?             @db.Decimal(10, 2)
+  station_description          station_description? @relation(fields: [description_id], references: [description_id], onDelete: NoAction, onUpdate: NoAction, map: "station_connector_ibfk_1")
+
+  @@index([description_id], map: "description_id")
+}
+
+model station_desc_api {
+  id                  Int                  @id @default(autoincrement())
+  api_id              Int?                 @db.SmallInt
+  og_api_pk           Int?
+  description_id      Int?
+  api_source          api_source?          @relation(fields: [api_id], references: [api_id], onDelete: NoAction, onUpdate: NoAction, map: "station_desc_api_ibfk_1")
+  station_description station_description? @relation(fields: [description_id], references: [description_id], onDelete: NoAction, onUpdate: NoAction, map: "station_desc_api_ibfk_2")
+
+  @@index([api_id], map: "api_id")
+  @@index([description_id], map: "description_id")
+}
+
+model station_description {
+  description_id         Int                 @id @default(autoincrement())
+  station_id             Int?
+  station_name           String?             @db.VarChar(255)
+  description_string     String?             @db.VarChar(600)
+  location_type          String?             @db.VarChar(255)
+  country_code           String?             @db.Char(10)
+  support_phone          String?             @db.VarChar(255)
+  is_support_charging    Boolean?
+  is_support_reservation Boolean?
+  location_name          String?             @db.VarChar(255)
+  last_charging          BigInt?
+  is_public              Boolean?
+  is_fast_charger        Boolean?
+  is_open_24x7           Boolean?
+  min_power_kw           Int?                @db.SmallInt
+  max_power_kw           Int?                @db.SmallInt
+  last_status_update     BigInt?
+  network_id             Int?                @db.TinyInt
+  status_id              Int?                @db.TinyInt
+  station_flags          Bytes?              @db.Bit(16)
+  comments               comments[]
+  images                 images[]
+  station_connector      station_connector[]
+  station_desc_api       station_desc_api[]
+  station_marker         station_marker?     @relation(fields: [station_id], references: [station_id], onDelete: NoAction, onUpdate: NoAction, map: "station_description_ibfk_1")
+
+  @@index([station_id], map: "station_id")
+}
+
+model station_marker {
+  station_id          Int                   @id @default(autoincrement())
+  longitude           Decimal               @db.Decimal(9, 6)
+  latitude            Decimal               @db.Decimal(9, 6)
+  station_description station_description[]
+  savedStations       SavedStations[]
+}
+
+model User {
+  id                   Int               @id @default(autoincrement())
+  name                 String            @db.VarChar(64)
+  email                String?           @unique @db.VarChar(64)
+  passwordHash         String?           @map("password_hash") @db.VarChar(256)
+  roleId               Int               @map("role_id")
+  role                 Role              @relation(fields: [roleId], references: [id])
+  isBanned             Boolean           @default(false) @map("is_banned")
+  emailVerificationKey String?           @unique @map("email_verification_key") @db.VarChar(36)
+  emailVerifiedAt      DateTime?         @map("email_verified_at") @db.Timestamp(3)
+  createdAt            DateTime          @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt            DateTime          @updatedAt @map("updated_at") @db.Timestamp(3)
+  permissions          UserPermissions[]
+  activities           UserActivity[]
+  RecoveryToken        RecoveryToken[]
+  comments             comments[]
+  savedStations        SavedStations[]
+
+  @@index([roleId])
+  @@map("users")
+}
+
+model SavedStations {
+  userId   Int
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  markerId Int
+  marker   station_marker @relation(fields: [markerId], references: [station_id], onDelete: Cascade)
+
+  @@id([userId, markerId])
+  @@map("savedStations")
+}
+
+model Role {
+  id          Int              @id @default(autoincrement())
+  name        String           @unique @db.VarChar(16)
+  permissions RolePermission[]
+  users       User[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id       Int              @id @default(autoincrement())
+  resource String           @db.VarChar(32)
+  action   String           @db.VarChar(32)
+  roles    RolePermission[]
+
+  @@unique([resource, action])
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           Int               @id @default(autoincrement())
+  roleId       Int               @map("role_id")
+  role         Role              @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permissionId Int               @map("permission_id")
+  permission   Permission        @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  users        UserPermissions[]
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model RecoveryToken {
+  userId    Int      @id @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @map("token_hash")
+  expiresAt DateTime @map("expires_at") @db.Timestamp(3)
+
+  @@map("recovery_tokens")
+}
+
+model UserPermissions {
+  userId           Int            @map("user_id")
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rolePermissionId Int            @map("role_permission_id")
+  rolePermission   RolePermission @relation(fields: [rolePermissionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, rolePermissionId])
+  @@map("user_permissions")
+}
+
+model UserSession {
+  id            String   @id @default(uuid()) @db.Char(36)
+  ip            String
+  userAgent     String   @map("user_agent")
+  refreshToken  String   @map("refresh_token")
+  userId        Int      @map("user_id")
+  lastRefreshAt DateTime @updatedAt @map("last_refresh_at") @db.Timestamp(3)
+
+  @@unique([userAgent, userId])
+  @@index([userId])
+  @@map("user_sessions")
+}
+
+model UserActivity {
+  userId         Int      @map("user_id")
+  user           User     @relation(fields: [userId], references: [id])
+  ip             String
+  lastActivityAt DateTime @default(now()) @map("last_activity_at") @db.Timestamp(3)
+
+  @@id([userId, ip])
+  @@index([userId])
+  @@index([ip])
+  @@map("user_activities")
+}
+
+model UserBan {
+  userId    Int      @id @map("user_id")
+  reason    String   @map("reason") @db.VarChar(512)
+  expiredAt DateTime @map("expired_at") @db.Timestamp(3)
+
+  @@map("user_bans")
+}

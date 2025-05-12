@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+.env
+.env.test
+logs
+dist
+.idea
+package-lock.json
+private-key.pem
+public-key.pem
+public
